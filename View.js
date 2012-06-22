@@ -236,6 +236,16 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 			// tags:
 			//		private
 
+            // call beforeRenderTemplate() to set up variables used in template
+            
+			//mixin view lifecycle implement
+			// Moved here to be able to access variables defined in definition
+			// during template rendering
+			if (this._definition) {
+				lang.mixin(this, this._definition);
+			}
+			this.beforeRenderTemplate();
+			
 			this._widget = this.render(this.templateString);
 			// bind view level data model
 			this.domNode = this._widget.domNode;
@@ -249,11 +259,6 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 			dattr.set(this.domNode, "region", "center");
 			dattr.set(this.domNode, "style", "width:100%; height:100%");
 			this._widget.region = "center";
-
-			//mixin view lifecycle implement
-			if (this._definition) {
-				lang.mixin(this, this._definition);
-			}
 
 			// call view assistant's init() method to initialize view
 			this.app.log("  > in app/View calling init() name=[",this.name,"], parent.name=[",this.parent.name,"]");
@@ -274,11 +279,17 @@ function(declare, lang, Deferred, when, require, dattr, TemplatedMixin, WidgetsI
 			// set the loadedModels here to be able to access the model on the parse.
 			if(this.loadedModels){
 				widgetInTemplate.loadedModels = this.loadedModels;
+				widgetInTemplate.parentView = this;
 			}
 			lang.mixin(widgetTemplate, widgetInTemplate);
 			widgetTemplate.templateString = templateString;
 			widgetTemplate.buildRendering();
 			return widgetTemplate;
+		},
+		
+		beforeRenderTemplate: function(){
+			// summary:
+			//		view life cycle beforeRenderTemplate()
 		},
 		
 		init: function(){
