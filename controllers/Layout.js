@@ -73,10 +73,10 @@ function(lang, declare, has, on, win, array, query, dstyle, dattr, dgeometry, re
 				 */
 			}else{
 				children = query("> [region]", view.domNode).map(function(node){
-					var w = registry.getEnclosingWidget(node);
-					if(w){
-						return w;
-					}
+//					var w = registry.getEnclosingWidget(node);
+//					if(w){
+//						return w;
+//					}
 
 					return {
 						domNode: node,
