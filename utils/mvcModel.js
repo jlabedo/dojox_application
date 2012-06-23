@@ -49,6 +49,11 @@ function(lang, Deferred, when, config, dataStore, getStateful, has){
 			}
 			options = {"data": params.data, query: {}};
 		}
+		for(var opt in params){
+		    if(opt!="store" && opt!="datastore" && opt!="data"){
+		        options[opt] = params[opt];
+		    }
+		}
 		var modelCtor;
 		var ctrl = null;
 		var newModel = null;
